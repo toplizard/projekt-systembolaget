@@ -3,6 +3,8 @@ extends layout
 block body
     div(ng-controller='AppCtrl')
         h2 Hello {{name}}
+        button(ng-click='updateDb()')
+            | Update Database
         ul.menu
             li
                 a(href='view1') view1
@@ -21,3 +23,4 @@ block body
     script(src='js/controllers.js')
     script(src='js/filters.js')
     script(src='js/directives.js')
+    script(src='js/lib/jQuery/jquery-2.1.4.js')
