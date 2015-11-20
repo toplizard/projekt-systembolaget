@@ -1,5 +1,4 @@
-angular.module('myApp.controllers', []).
-controller('AppCtrl', function ($scope, $http) {
+myApp.controller('AppCtrl', ['$scope', '$http', 'dbService', function ($scope, $http, dbService) {
     $http({
         method: 'GET',
         url: '/api/name'
@@ -10,12 +9,17 @@ controller('AppCtrl', function ($scope, $http) {
     error(function (data, status, headers, config) {
         $scope.name = 'Error!';
     });
-}).
 
-controller('MyCtrl1', function ($scope) {
+    $scope.updateDb = function(){
+        console.log('calling dbService.updateDb');
+        dbService.updateDb();
+    };
+}]);
 
-}).
+myApp.controller('MyCtrl1', function ($scope) {
 
-controller('MyCtrl2', function ($scope) {
+});
+
+myApp.controller('MyCtrl2', function ($scope) {
 
 });
