@@ -14,6 +14,11 @@ myApp.controller('AppCtrl', ['$scope', '$http', 'dbService', function ($scope, $
         console.log('calling dbService.updateDb');
         dbService.updateDb();
     };
+
+    $scope.getArticleById = function(){
+        console.log('getting article')
+        dbService.getArticleById();
+    };
 }]);
 
 myApp.controller('MyCtrl1', function ($scope) {
