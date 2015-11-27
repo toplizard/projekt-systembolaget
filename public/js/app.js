@@ -2,19 +2,21 @@ var myApp = angular.module('myApp', []);
 
 myApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider
-
-        .when('/', {
-            templateUrl: 'partials/partial1',
-            controller: 'MyCtrl1'
+        .when('/articles', {
+            templateUrl: 'partials/articles',
+            controller: ''
         })
-        .when('/view1', {
-            templateUrl: 'partials/partial1',
-            controller: 'MyCtrl1'
+        .when('/articles/:articleId', {
+            templateUrl: 'partials/article',
+            controller: 'article'
         })
-        .when('/view2', {
-            templateUrl: 'partials/partial2',
-            controller: 'MyCtrl2'
+        .when('/test', {
+            templateUrl: '/partials/partial2',
+            controller: 'AppCtrl'
         })
+        .otherwise({
+            redirectTo: "/articles"
+        });
 
     $locationProvider.html5Mode(true);
 });

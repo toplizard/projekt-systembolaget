@@ -7,7 +7,11 @@ exports.index = function(req, res){
     res.render('index');
 };
 
-exports.partials = function (req, res) {
-    var name = req.params.name;
-    res.render('partials/' + name);
+exports.article = function (req, res) {
+    var articleId = req.params.articleId;
+    res.render('partials/' + articleId);
+};
+
+exports.test = function(req, res){
+    res.render('partials/partial2');
 };

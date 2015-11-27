@@ -1,0 +1,26 @@
+table
+    tr
+        th articleId
+        th name
+        th prodType
+        th producer
+        th volume
+        th alcoholPercent
+        th price
+
+    tr(ng-repeat='article in articleList | limitTo: 50 | orderBy: "articleId"')
+        td.
+            {{article.articleId}}
+        td
+            a(href='articles/{{article.articleId}}').
+                {{article.name}}
+        td.
+            {{article.prodType}}
+        td.
+            {{article.producer}}
+        td.
+            {{article.volume}} ml
+        td.
+            {{article.alcoholPercent}}
+        td.
+            {{article.price}} kr

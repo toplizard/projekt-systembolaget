@@ -1,28 +1,55 @@
-extends layout
+html(ng-app="myApp")
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        base(href='/index')
+        title Projekt Systembolaget
+        link(rel='stylesheet', href='/css/app.css')
+        script(src='js/lib/angular/angular.js')
+        script(src='js/app.js')
+        script(src='js/services.js')
+        script(src='js/controllers.js')
+        script(src='js/filters.js')
+        script(src='js/directives.js')
+    block body
+        div(ng-controller='AppCtrl')
+            h2 Hello
+            div
+                button(ng-click='updateDb()')
+                    | Update Database
+            div
+                input(ng-model='searchArticle')
+                button(ng-click='getArticleById(searchArticle)')
+                    | Get article
+            div
+                button(ng-click='getArticles()')
+                    | Get articles
+            ul.menu
+                li
+                    a(href='/view1') view1
+                li
+                    a(href='view2') view2
+        h1= title
+        div.addCommentForm
+            form( method="post", action="/create")
+                div
+                    div
+                        span.label Name :
+                        input(type="text", class="nameTxt", name="username")
+                    div
+                        span.label Comment :
+                        textarea(name="comment")
+                    div#addCommentSubmit
+                        input(type="submit", value="Save")
+        #comments
+            - each comment in comments
+            div.comment
+                div.name= comment.username
+                div.created_at= comment.created
+                br
+                div.content= comment.content
+                hr
 
-block body
-    div(ng-controller='AppCtrl')
-        h2 Hello {{name}}
-        button(ng-click='updateDb()')
-            | Update Database
-        button(ng-click='getArticleById()')
-            | Get article
-        ul.menu
-            li
-                a(href='view1') view1
-            li
-                a(href='view2') view2
 
-    div(ng-view)
 
-    div
-        | Angular seed app: v
-        span(app-version)
-
-    script(src='js/lib/angular/angular.js')
-    script(src='js/app.js')
-    script(src='js/services.js')
-    script(src='js/controllers.js')
-    script(src='js/filters.js')
-    script(src='js/directives.js')
-    script(src='js/lib/jQuery/jquery-2.1.4.js')
+        div(ng-view)

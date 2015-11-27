@@ -17,15 +17,15 @@ var express = require('express'),
 var app = module.exports = express();
 
 
-mongoose.connect('mongodb://localhost/test');
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Connection error:'));
-db.once('open', function(){
-    console.log('Connection established');
-});
+
+
+/**
+ * Schemas
+ */
 
 var Schema = mongoose.Schema;
+
 var articleSchema = new Schema({
     articleId: Number,
     name: String,
@@ -36,6 +36,19 @@ var articleSchema = new Schema({
     producer: String
 });
 var Article = mongoose.model('Article', articleSchema);
+
+var commentSchema = new Schema({
+    commentId: Number,
+    body: String,
+    date: Date,
+    userId: Number
+});
+var Comment = mongoose.model('Comment', commentSchema);
+
+
+/**
+ * Hooks
+ */
 
 articleSchema.pre('save', function(next){
     var self = this;
@@ -49,13 +62,6 @@ articleSchema.pre('save', function(next){
     });
 });
 
-Article.find({"articleId":"1"}, function(err, articles){
-    if(err){
-        return console.error(err);
-    } else {
-        console.log(articles);
-    }
-});
 
 /**
  * Configuration
@@ -76,10 +82,8 @@ app.use(bodyParser.json({ strict: true }));
 
 // serve index and view partials
 app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
-// JSON API
-app.get('/api/name', api.name);
+app.get('/partials/:articleId', routes.article);
+app.get('/test', routes.test);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
@@ -95,7 +99,7 @@ app.post('/api/updatedb', function(){
                 object: true,
                 reversible: false,
                 coerce: true,
-                sanitize: true,
+                sanitize: false,
                 trim: true,
                 arrayNotation: false
             });
@@ -119,7 +123,7 @@ app.post('/api/updatedb', function(){
                 });
             };
 
-            console.log("Database updated")
+            console.log("Database updated");
         };
     });
 });
@@ -127,20 +131,40 @@ app.post('/api/updatedb', function(){
 app.post('/api/getarticle', function(req, res){
     var query = req.body;
 
-    Article.find(query, function(err, articles){
+    Article.find(query, function(err, article){
         if(err){
             return console.error(err);
         } else {
-            console.log(articles);
+            res.send(article);
+        }
+    });
+});
+
+app.post('/api/getarticles', function(req, res){
+    Article.find(function(err, articles){
+        if(err){
+            return console.error(err);
+        } else {
+            res.send(articles);
         }
     });
 });
 
 
 
+
 /**
+ * Connect to database
  * Start Server
  */
+
+mongoose.connect('mongodb://localhost/test');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', function(){
+    console.log('Connection established');
+});
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

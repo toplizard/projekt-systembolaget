@@ -9,15 +9,32 @@ myApp.service('dbService', [function(){
         });
     };
 
-    this.getArticleById = function(){
-        var testData = {'articleId':'1'};
-        console.log(JSON.stringify(testData));
-        $.ajax({
-            type: 'POST',
-            data: JSON.stringify(testData),
-            contentType: 'application/json',
-            dataType: 'json',
+}]);
+
+myApp.service('articleService', ['$rootScope', '$http', function($rootScope, $http){
+
+    this.getArticleById = function(articleId){
+        var queryId = {'articleId':articleId};
+
+        $http({
+            method: 'POST',
+            data: JSON.stringify(queryId),
             url: 'http://localhost:3000/api/getarticle'
-        });
+        })
+            .success(function(response){
+                $rootScope.article = response[0];
+            });
     };
+
+    this.getArticles = function(){
+
+        $http({
+            method: 'POST',
+            url: 'http://localhost:3000/api/getarticles'
+        })
+            .success(function(response){
+                $rootScope.articleList = response;
+            });
+    };
+
 }]);
